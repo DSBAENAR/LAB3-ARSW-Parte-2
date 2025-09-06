@@ -6,6 +6,7 @@
 package edu.eci.arsw.blueprints.persistence.impl;
 
 import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
@@ -28,7 +29,14 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     /**
      * Constructor for InMemoryBlueprintPersistence.
      */
-    public InMemoryBlueprintPersistence() {}    
+    public InMemoryBlueprintPersistence() {
+        Blueprint bp=new Blueprint("dsbaenar", "ECI Blueprint", new Point[]{new Point(140, 140),new Point(115, 115)});
+        blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        bp=new Blueprint("dsbaenar", "Highway Blueprint", new Point[]{new Point(10, 10),new Point(15, 15)});
+        blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        bp=new Blueprint("Maria", "House Blueprint", new Point[]{new Point(0, 0),new Point(10, 10)});
+        blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+    }    
     
     /**
      * @param bp the new blueprint
