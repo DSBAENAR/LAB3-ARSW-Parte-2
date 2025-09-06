@@ -56,12 +56,12 @@ public class BlueprintController {
      * @param author the author of the blueprint
      * @return ResponseEntity
      */
-    @GetMapping("/blueprint/author/{author}")
+    @GetMapping("/{author}")
     public ResponseEntity<?> getBlueprintByAuthor(@PathVariable String author){
         try {
             return ResponseEntity.ok(bps.getBlueprintsByAuthor(author));
         } catch (BlueprintPersistenceException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(404).body(e.getMessage());
             
         }
     }
