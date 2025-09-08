@@ -81,6 +81,16 @@ public class BlueprintController {
             
         }
     }
+    
+    @GetMapping("/{author}/{bpname}")
+    public ResponseEntity<?> getBlueprintByNameAndAuthor(@PathVariable String author, @PathVariable String bpname){
+        try {
+            return ResponseEntity.ok(bps.getBlueprintByNameAndAuthor(author, bpname));
+        } catch (BlueprintPersistenceException e) {
+            return ResponseEntity. status(404).body(e.getMessage());
+            
+        }
+    }
 
     /**
      * Add a new blueprint.

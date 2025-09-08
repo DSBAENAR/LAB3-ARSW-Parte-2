@@ -203,4 +203,21 @@ public class BlueprintsServices {
         bpp.deleteBlueprint(bp);
     }
 
+    /**
+     * 
+     * @param author blueprint's author
+     * @param bpname blueprint's name
+     * @return the blueprint of the given name created by the given author
+     * @throws BlueprintPersistenceException if there is no such blueprint
+     */
+    public Object getBlueprintByNameAndAuthor(String author, String bpname) throws BlueprintPersistenceException {
+        Optional<Blueprint> bp = bpp.getAllBlueprints().stream().filter
+        (bprint -> bprint.getAuthor().equals(author) && bprint.getName().equals(bpname))
+        .findFirst();
+        if (bp.isPresent()) {
+            return bp.get();
+        }
+        throw new BlueprintPersistenceException("The Blueprint " + bpname + " by " + author + " does not exist.");
+    }
+
 }
