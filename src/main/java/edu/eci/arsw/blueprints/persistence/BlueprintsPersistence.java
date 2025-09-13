@@ -56,5 +56,5 @@ public interface BlueprintsPersistence {
      * @throws BlueprintNotFoundException if the blueprint does not exist
      * @throws BlueprintPersistenceException if a persistence error occurs
      */
-    public void deleteBlueprint(Blueprint bp) throws BlueprintNotFoundException, BlueprintPersistenceException;
+    public void deleteBlueprint(Blueprint bp) throws BlueprintPersistenceException;
 }

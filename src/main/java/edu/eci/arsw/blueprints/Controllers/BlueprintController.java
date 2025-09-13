@@ -137,11 +137,8 @@ public class BlueprintController {
     public ResponseEntity<?> deleteBlueprint(@PathVariable String name) {
         try {
             bps.deleteBlueprint(name);
-        } catch (BlueprintNotFoundException e) {
-            
-            e.getMessage();
         } catch (BlueprintPersistenceException e) {
-            e.getMessage();
+            return ResponseEntity.status(404).body(e.getMessage());
         }
         return ResponseEntity.ok("Blueprint " + name + " has been deleted.");
     }

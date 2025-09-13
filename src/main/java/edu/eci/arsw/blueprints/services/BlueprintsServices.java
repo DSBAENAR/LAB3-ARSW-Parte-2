@@ -193,12 +193,11 @@ public class BlueprintsServices {
      * @throws BlueprintNotFoundException if the blueprint doesn't exist
      * @throws BlueprintPersistenceException if there's an error during persistence
      */
-    public void deleteBlueprint(String name) throws BlueprintNotFoundException, BlueprintPersistenceException {
+    public void deleteBlueprint(String name) throws BlueprintPersistenceException {
         Set<Blueprint> existingBpSet = getBlueprintsByName(name);
         if (existingBpSet == null || existingBpSet.isEmpty()) {
-            throw new BlueprintNotFoundException("No Blueprint with name " + name + " exists.");
+            throw new BlueprintPersistenceException("No Blueprint with name " + name + " exists.");
         }
-
         Blueprint bp = existingBpSet.iterator().next();
         bpp.deleteBlueprint(bp);
     }
