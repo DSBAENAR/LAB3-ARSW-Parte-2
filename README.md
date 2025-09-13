@@ -83,3 +83,35 @@ Para este caso usé Postman para verificar el funcionamiento
 ```
 <img width="1021" height="693" alt="image" src="https://github.com/user-attachments/assets/74a2bec2-a48c-443c-acbc-89f2c4efc401" />
 <img width="999" height="648" alt="image" src="https://github.com/user-attachments/assets/8e1b48b7-c7d7-4579-8567-81ff6d9b754e" />
+
+6.Agregue el manejo de peticiones POST (creación de nuevos planos), de manera que un cliente http pueda registrar una nueva orden haciendo una petición POST al recurso ‘planos’, y enviando como contenido de la petición todo el detalle de dicho recurso a través de un documento JSON. Para esto, tenga en cuenta el siguiente ejemplo, que considera -por consistencia con el protocolo HTTP- el manejo de códigos de estados HTTP (en caso de éxito o error):
+
+```java
+public ResponseEntity<?> addBlueprint(@RequestBody Blueprint bp){
+        try {
+            bps.addNewBlueprint(bp);
+            return ResponseEntity.status(201).body("The Blueprint made by " + bp.getAuthor() + " with name " + bp.getName() + " has been created.");
+        } catch (BlueprintPersistenceException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+```
+7. Para probar que el recurso ‘planos’ acepta e interpreta correctamente las peticiones POST, use el comando curl de Unix. Este comando tiene como parámetro el tipo de contenido manejado (en este caso jSON), y el ‘cuerpo del mensaje’ que irá con la petición, lo cual en este caso debe ser un documento jSON equivalente a la clase Cliente (donde en lugar de {ObjetoJSON}, se usará un objeto jSON correspondiente a una nueva orden:
+<img width="568" height="159" alt="image" src="https://github.com/user-attachments/assets/e2783bc4-a431-43b8-93c2-e71aae2431dd" />
+8. Agregue soporte al verbo PUT para los recursos de la forma '/blueprints/{author}/{bpname}', de manera que sea posible actualizar un plano determinado.
+```java
+@PutMapping("/{author}/{bpname}")
+    public ResponseEntity<?> updateBlueprint(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint blueprint) {
+        try {
+            bps.updateBlueprint(author, bpname, blueprint);
+            return ResponseEntity.ok("Blueprint updated successfully.");
+        } catch (BlueprintNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (BlueprintPersistenceException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+```
+<img width="998" height="524" alt="image" src="https://github.com/user-attachments/assets/1c3b51aa-42ba-417d-ad36-8e9ddeeaf967" />
+<img width="771" height="691" alt="image" src="https://github.com/user-attachments/assets/4f7abf54-cf9e-495c-8df8-ef4db5ecb34c" />
+
