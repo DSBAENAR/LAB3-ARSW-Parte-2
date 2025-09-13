@@ -126,7 +126,24 @@ public class BlueprintController {
         }
     }
 
-    
+    /**
+     * Update a blueprint by author and name.
+     * @param author the author of the blueprint
+     * @param bpname the name of the blueprint
+     * @param blueprint the updated blueprint
+     * @return ResponseEntity
+     */
+    @PutMapping("/{author}/{bpname}")
+    public ResponseEntity<?> updateBlueprint(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint blueprint) {
+        try {
+            bps.updateBlueprint(author, bpname, blueprint);
+            return ResponseEntity.ok("Blueprint updated successfully.");
+        } catch (BlueprintNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (BlueprintPersistenceException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
 
     /**
      * Delete a blueprint by name.

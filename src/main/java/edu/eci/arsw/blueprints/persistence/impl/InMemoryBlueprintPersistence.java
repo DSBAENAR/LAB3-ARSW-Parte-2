@@ -112,4 +112,11 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         blueprints.remove(new Tuple<>(bp.getAuthor(), bp.getName()));
     }
 
+    @Override
+    public void updateBlueprint(String author, String bpname, Blueprint blueprint) {
+        Tuple<String, String> key = new Tuple<>(author, bpname);
+        if (blueprints.containsKey(key)) {
+            blueprints.put(key, blueprint);
+        }
+    }
 }

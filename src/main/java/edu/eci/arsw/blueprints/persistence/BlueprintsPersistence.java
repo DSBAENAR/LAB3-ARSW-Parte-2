@@ -50,6 +50,7 @@ public interface BlueprintsPersistence {
      */
     public void updateBlueprint(Blueprint bp) throws BlueprintPersistenceException, BlueprintNotFoundException;
 
+
     /**
      * Deletes an existing blueprint.
      * @param bp the blueprint to delete
@@ -57,4 +58,6 @@ public interface BlueprintsPersistence {
      * @throws BlueprintPersistenceException if a persistence error occurs
      */
     public void deleteBlueprint(Blueprint bp) throws BlueprintPersistenceException;
+
+    public void updateBlueprint(String author, String bpname, Blueprint blueprint);
 }

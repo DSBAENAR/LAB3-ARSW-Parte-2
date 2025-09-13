@@ -218,5 +218,16 @@ public class BlueprintsServices {
         }
         throw new BlueprintPersistenceException("The Blueprint " + bpname + " by " + author + " does not exist.");
     }
+    public void updateBlueprint(String author, String bpname, Blueprint blueprint) throws BlueprintNotFoundException, BlueprintPersistenceException {
+        Blueprint existingBlueprint = getBlueprint(author, bpname);
+        if (existingBlueprint == null) {
+            throw new BlueprintNotFoundException("No Blueprint with name " + bpname + " by author " + author + " exists.");
+        }
+        if (!existingBlueprint.getAuthor().equals(blueprint.getAuthor()) || !existingBlueprint.getName().equals(blueprint.getName())) {
+            throw new BlueprintPersistenceException("The author and name of the updated blueprint must match the existing one.");
+        }
+        bpp.updateBlueprint(author, bpname, blueprint);
+
+    }
 
 }
