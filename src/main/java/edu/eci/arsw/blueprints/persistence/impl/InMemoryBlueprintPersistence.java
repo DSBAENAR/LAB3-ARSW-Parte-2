@@ -57,8 +57,9 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
      */
     @Override
     public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
-        if (blueprints.containsKey(new Tuple<>(author, bprintname))) {
-            return blueprints.get(new Tuple<>(author, bprintname));
+        Blueprint bp = blueprints.get(new Tuple<>(author, bprintname));
+        if (bp != null) {
+            return bp;
         }
         throw new BlueprintNotFoundException("Blueprint not found: " + author + ", " + bprintname);
     }
@@ -72,6 +73,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         if (blueprints.isEmpty()){
             throw new BlueprintPersistenceException("There are no Blueprints.");
         }
+        // ConcurrentHashMap.values() is thread-safe for iteration
         return Set.copyOf(blueprints.values());
     }
 
@@ -82,10 +84,10 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
      */
     @Override
     public void updateBlueprint(Blueprint bp) throws BlueprintPersistenceException, BlueprintNotFoundException {
-        if (!blueprints.containsKey(new Tuple<>(bp.getAuthor(), bp.getName()))) {
+        Tuple<String,String> key = new Tuple<>(bp.getAuthor(), bp.getName());
+        if (blueprints.replace(key, bp) == null) {
             throw new BlueprintNotFoundException("Blueprint not found: " + bp);
         }
-        blueprints.put(new Tuple<>(bp.getAuthor(), bp.getName()), bp);
     }
 
     /** 
@@ -95,17 +97,15 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
      */
     @Override
     public void deleteBlueprint(Blueprint bp) throws BlueprintPersistenceException {
-        if (!blueprints.containsKey(new Tuple<>(bp.getAuthor(), bp.getName()))) {
+        Tuple<String,String> key = new Tuple<>(bp.getAuthor(), bp.getName());
+        if (blueprints.remove(key) == null) {
             throw new BlueprintPersistenceException("Blueprint not found: " + bp);
         }
-        blueprints.remove(new Tuple<>(bp.getAuthor(), bp.getName()));
     }
 
     @Override
     public void updateBlueprint(String author, String bpname, Blueprint blueprint) {
-        Tuple<String, String> key = new Tuple<>(author, bpname);
-        if (blueprints.containsKey(key)) {
-            blueprints.put(key, blueprint);
-        }
+    Tuple<String, String> key = new Tuple<>(author, bpname);
+    blueprints.replace(key, blueprint);
     }
 }
