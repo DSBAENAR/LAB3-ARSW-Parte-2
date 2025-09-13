@@ -25,5 +25,7 @@ public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException {
     }
 }
 
+ Para otras operaciones (actualizar, eliminar), se usaron los métodos atómicos de ConcurrentHashMap (replace, remove, etc.) para mantener la seguridad en concurrencia.
+
 Conclusión:
 La solución implementada elimina las condiciones de carrera usando colecciones thread-safe y métodos atómicos, manteniendo el desempeño y la integridad de los datos en un entorno concurrente.
